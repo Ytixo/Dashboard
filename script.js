@@ -1,26 +1,43 @@
-const audio = document.getElementById("audio");
-const player = document.getElementById("player")
-const video = document.getElementById("bg");
+const audio = document.getElementById("audio2");
+const video = document.getElementById("fond1");
+const backBtn = document.getElementById("backBtn");
+const musicBtn = document.getElementById("musicBtn");
+const overlayMusic = document.getElementById("overlay");
 const volume = document.getElementById("volume");
 const labelArtiste = document.getElementById("artist");
 const labelTrack = document.getElementById("track");
 
-let playing = false;
-
-player.onclick = () => {
-  if (!playing) {
-    labelTrack.innerText = audio.src 
-    audio.play();
-    video.play();
-    playing = true;
-    console.log();
-  } else {
-    audio.pause();
-    playing = false;
-  }
+musicBtn.onclick = () => {
+  jsmediatags.read(audio.src, {
+    onSuccess: (tag) => {
+      const tags = tag.tags;
+      labelTrack.innerText = tags.title || "Titre inconnu";
+      labelArtiste.innerText = tags.artist || "Artiste inconnu";
+    },
+    onError: (err) => {
+      console.error("Erreur lecture tags :", err);
+      labelTrack.innerText = "Titre inconnu";
+      labelArtiste.innerText = "Artiste inconnu";
+    }
+  });
+  backBtn.style.display = "block";
+  musicBtn.style.display = "none"
+  overlayMusic.style.display = "flex";
+  audio.play();
+  audioCtx.resume();
+  video.style.display = "block";
+  video.play();
+  playing = true;
 };
 
-
+backBtn.onclick = () => {
+    audio.pause();
+    video.pause();
+    video.style.display = "none";
+    overlayMusic.style.display = "none";
+    backBtn.style.display = "none";
+    musicBtn.style.display = "block"
+}
 
 // volume
 volume.value = 0.5;

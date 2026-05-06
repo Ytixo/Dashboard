@@ -4,25 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/7b0a0d9c5e.js" crossorigin="anonymous"></script>
     <title>Yti's Dashboard</title>
 </head>
 <body>
-    <video loop muted id="bg">
+    <video autoplay loop muted id="bg">
+        <source src="video/anime/DEFAULT.mp4" type="video/mp4">
+    </video>
+
+    <video loop muted id="fond1">
         <source src="video/anime/YOUR NAME.mp4" type="video/mp4">
     </video>
 
     <div id="player">
+        <!-- BOUTON TOP BAR-->
+        <div id="topbar">
+            <div id="backBtn"><i class="fa-solid fa-angle-left"></i></div>
+            <div id="musicBtn"><i class="fa-solid fa-music"></i></div>
+        </div>
         <!-- OVERLAY -->
         <div id="overlay">
-            <div id="track">Nom du son</div>
-            <div id="artist">Artiste</div>
-            <div id="label">🔊</div>
-            <input type="range" id="volume" min="0" max="1" step="0.01">
+            <div id="infoson">
+                <div id="track">Nom du son</div>
+                <div id="artist">Artiste</div>
+                <div id="label">🔊</div>
+                <input type="range" id="volume" min="0" max="1" step="0.01">
+            </div>
+            <canvas id="visualizer"></canvas>
         </div>
     </div>
 
-    <audio id="audio" src="music/Phonk for study Atmospheric Mix - DeadNSD.mp3"></audio>
+    <audio id="audio1" src="music/Phonk for study Atmospheric Mix - DeadNSD.mp3"></audio>
+    <audio id="audio2" src="music/Speed songs that give me energy🎶🌟🌈.mp3"></audio>
 
     <script src="script.js"></script>
+    <script src="script-vizualizer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+    
 </body>
 </html>
