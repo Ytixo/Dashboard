@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/7b0a0d9c5e.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7b0a0d9c5e.js" crossorigin="anonymous" async></script>
     <title>Yti's Dashboard</title>
 </head>
 <body>
@@ -17,30 +17,154 @@
     </video>
 
     <div id="player">
-        <!-- BOUTON TOP BAR-->
         <div id="topbar">
-            <div id="backBtn"><i class="fa-solid fa-angle-left"></i></div>
-            <div id="musicBtn"><i class="fa-solid fa-music"></i></div>
+            <button id="backBtn" class="topbar-btn" type="button" title="Retour">
+                <i class="fa-solid fa-angle-left"></i>
+            </button>
+            <button id="musicBtn" class="topbar-btn" type="button" title="Music">
+                <i class="fa-solid fa-music"></i>
+            </button>
+            <div id="sessionBadge"></div>
         </div>
-        <!-- OVERLAY -->
-        <div id="overlay">
-            <div id="infoson">
-                <div id="track">Nom du son</div>
-                <div id="artist">Artiste</div>
-                <div id="label">🔊</div>
-                <input type="range" id="volume" min="0" max="1" step="0.01">
-                <div id="musicStop"><i class="fa-solid fa-stop"></i></div>
+
+        <section id="overlay" aria-label="Music">
+            <div class="music-layout">
+                <aside class="music-sidebar">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">Module</span>
+                            <h1>Music</h1>
+                        </div>
+                        <button id="logoutBtn" class="ghost-btn hidden" type="button" title="Déconnexion">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+
+                    <form id="authPanel" class="auth-panel">
+                        <label for="username">Utilisateur</label>
+                        <input id="username" name="username" autocomplete="username" placeholder="yti" required>
+
+                        <label for="password">Mot de passe</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••" required>
+
+                        <div class="auth-actions">
+                            <button id="loginBtn" class="primary-btn" type="submit">Connexion</button>
+                            <button id="registerBtn" class="ghost-btn" type="button">Créer</button>
+                        </div>
+                    </form>
+
+                    <div id="accountPanel" class="account-panel hidden">
+                        <div class="account-line">
+                            <span id="accountName">Connecté</span>
+                            <span id="youtubeState" class="status-pill">YouTube</span>
+                        </div>
+
+                        <div id="youtubeAuthPanel" class="youtube-auth">
+                            <textarea id="cookieInput" spellcheck="false" placeholder="Colle ici les cookies ou le JSON généré depuis music.youtube.com"></textarea>
+                            <div class="auth-actions">
+                                <button id="saveCookieBtn" class="primary-btn" type="button">
+                                    <i class="fa-solid fa-key"></i>
+                                    Lier
+                                </button>
+                                <button id="copyCookieScriptBtn" class="ghost-btn" type="button">
+                                    <i class="fa-solid fa-copy"></i>
+                                    Script
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="libraryPanel" class="library-panel hidden">
+                        <div class="section-title">
+                            <h2>Playlists</h2>
+                            <button id="refreshPlaylistsBtn" class="icon-btn" type="button" title="Actualiser">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                        <div id="playlistList" class="playlist-list"></div>
+                    </div>
+
+                    <div id="historyPanel" class="history-panel hidden">
+                        <div class="section-title">
+                            <h2>Historique</h2>
+                        </div>
+                        <div id="historyList" class="compact-list"></div>
+                    </div>
+                </aside>
+
+                <main class="music-main">
+                    <form id="searchForm" class="search-form">
+                        <div class="search-input-wrap">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input id="musicSearchInput" placeholder="Recherche YouTube Music" autocomplete="off">
+                        </div>
+                        <button id="musicSearchBtn" class="primary-btn icon-text" type="submit">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            Chercher
+                        </button>
+                    </form>
+
+                    <div class="filter-tabs" role="tablist" aria-label="Filtres Music">
+                        <button class="filter-tab active" type="button" data-filter="songs">Titres</button>
+                        <button class="filter-tab" type="button" data-filter="videos">Vidéos</button>
+                        <button class="filter-tab" type="button" data-filter="playlists">Playlists</button>
+                    </div>
+
+                    <div id="musicStatus" class="music-status"></div>
+                    <div id="musicResults" class="results-list"></div>
+                </main>
             </div>
+
+        </section>
+
+        <div id="playerDock" class="player-dock dock-hidden">
+            <img id="nowThumb" alt="">
+            <div class="now-meta">
+                <div id="track">Aucun titre</div>
+                <div id="artist">Connecte ton compte et lance une recherche</div>
+            </div>
+
+            <div class="transport">
+                <button id="shuffleBtn" class="icon-btn" type="button" title="Aléatoire">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button id="prevBtn" class="icon-btn" type="button" title="Précédent">
+                    <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button id="playPauseBtn" class="main-play-btn" type="button" title="Lecture">
+                    <i class="fa-solid fa-play"></i>
+                </button>
+                <button id="nextBtn" class="icon-btn" type="button" title="Suivant">
+                    <i class="fa-solid fa-forward-step"></i>
+                </button>
+                <button id="repeatBtn" class="icon-btn" type="button" title="Répéter ce titre">
+                    <i class="fa-solid fa-repeat"></i>
+                </button>
+                <button id="musicStop" class="icon-btn" type="button" title="Stop">
+                    <i class="fa-solid fa-stop"></i>
+                </button>
+            </div>
+
+            <div id="remoteControl" class="remote-control hidden">
+                <i class="fa-solid fa-display"></i>
+                <select id="deviceSelect" title="Appareil de lecture"></select>
+            </div>
+
+            <div class="volume-control">
+                <i class="fa-solid fa-volume-high"></i>
+                <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+            </div>
+
             <canvas id="visualizer"></canvas>
         </div>
     </div>
 
-    <audio id="audio1" src="music/Phonk for study Atmospheric Mix - DeadNSD.mp3"></audio>
-    <audio id="audio2" src="music/Speed songs that give me energy🎶🌟🌈.mp3"></audio>
+    <audio id="audioPlayer" preload="none"></audio>
+    <div id="youtubePlayerShell" aria-hidden="true">
+        <div id="youtubePlayer"></div>
+    </div>
 
     <script src="script.js"></script>
     <script src="script-vizualizer.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
-    
 </body>
 </html>

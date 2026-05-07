@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+ytmusicapi
+yt_dlp
+requests
