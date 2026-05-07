@@ -12,6 +12,7 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: -1;
+  display: block;
 }
 
 #fond1 {
@@ -118,6 +119,16 @@ body {
 /* 🔊 volume */
 #volume {
   width: 200px;
+}
+
+#musicStop {
+  color: black;
+  background: white;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  padding: 2%;
+  width: fit-content;
+  border-radius: 15px;
 }
 
 #visualizer {

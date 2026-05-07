@@ -1,11 +1,13 @@
 const audio = document.getElementById("audio2");
 const video = document.getElementById("fond1");
+const bg = document.getElementById("bg");
 const backBtn = document.getElementById("backBtn");
 const musicBtn = document.getElementById("musicBtn");
 const overlayMusic = document.getElementById("overlay");
 const volume = document.getElementById("volume");
 const labelArtiste = document.getElementById("artist");
 const labelTrack = document.getElementById("track");
+const musicStop = document.getElementById("musicStop");
 
 musicBtn.onclick = () => {
   jsmediatags.read(audio.src, {
@@ -20,6 +22,7 @@ musicBtn.onclick = () => {
       labelArtiste.innerText = "Artiste inconnu";
     }
   });
+  bg.style.display = "none";
   backBtn.style.display = "block";
   musicBtn.style.display = "none"
   overlayMusic.style.display = "flex";
@@ -31,12 +34,16 @@ musicBtn.onclick = () => {
 };
 
 backBtn.onclick = () => {
-    audio.pause();
+    bg.style.display = "block";
     video.pause();
     video.style.display = "none";
-    overlayMusic.style.display = "none";
     backBtn.style.display = "none";
     musicBtn.style.display = "block"
+}
+
+musicStop.onclick = () => {
+  audio.pause();
+  overlayMusic.style.display = "none";
 }
 
 // volume
