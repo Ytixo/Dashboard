@@ -1,12 +1,20 @@
-import { hideDocs, showDocs } from "./docs.js";
-import { hideMusic, refreshMusicDock, showMusic } from "./music.js";
+import { hideDocs, showDocs } from "./docs.js?v=20260509-2";
+import { hideMusic, initMusic, refreshMusicDock, showMusic } from "./music.js?v=20260509-2";
 
-const bg = document.getElementById("bg");
-const video = document.getElementById("fond1");
-const backBtn = document.getElementById("backBtn");
-const musicBtn = document.getElementById("musicBtn");
-const docsBtn = document.getElementById("docsBtn");
-const videoLoader = document.getElementById("videoLoader");
+function getElement(id) {
+  const element = document.getElementById(id);
+  if (!element) {
+    throw new Error(`Element #${id} introuvable.`);
+  }
+  return element;
+}
+
+const bg = getElement("bg");
+const video = getElement("fond1");
+const backBtn = getElement("backBtn");
+const musicBtn = getElement("musicBtn");
+const docsBtn = getElement("docsBtn");
+const videoLoader = getElement("videoLoader");
 
 function activeVideo() {
   return video.style.display === "block" ? video : bg;
@@ -72,10 +80,19 @@ function closePanel() {
   setLoadingVideo(bg);
 }
 
-musicBtn.addEventListener("click", openMusic);
-docsBtn.addEventListener("click", openDocs);
-backBtn.addEventListener("click", closePanel);
+let started = false;
 
-[bg, video].forEach(watchVideoLoad);
-setLoadingVideo(bg);
-refreshMusicDock();
+export function initMain() {
+  if (started) {
+    return;
+  }
+  started = true;
+  window.dashboardMainReady = true;
+  initMusic();
+  musicBtn.addEventListener("click", openMusic);
+  docsBtn.addEventListener("click", openDocs);
+  backBtn.addEventListener("click", closePanel);
+  [bg, video].forEach(watchVideoLoad);
+  setLoadingVideo(bg);
+  refreshMusicDock();
+}

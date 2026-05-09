@@ -1,4 +1,4 @@
-import { initVisualizer } from "./music-visualizer.js";
+import { initVisualizer } from "./music-visualizer.js?v=20260509-2";
 
 const audio = document.getElementById("audioPlayer");
 const overlayMusic = document.getElementById("overlay");
@@ -955,6 +955,14 @@ function setVolumeLocal(value) {
   heartbeat();
 }
 
+let musicStarted = false;
+
+export function initMusic() {
+  if (musicStarted) {
+    return;
+  }
+  musicStarted = true;
+
 authPanel.addEventListener("submit", (event) => {
   event.preventDefault();
   authenticate("/api/auth/login");
@@ -1115,3 +1123,4 @@ initVisualizer(audio);
 updateModeButtons();
 updateDockVisibility();
 loadMe();
+}

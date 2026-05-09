@@ -1,15 +1,26 @@
 async function loadPartials() {
   const templates = [...document.querySelectorAll("template[data-include]")];
   await Promise.all(templates.map(async (template) => {
-    const response = await fetch(`partials/${template.dataset.include}.html`);
+    const name = template.dataset.include;
+    const response = await fetch(new URL(`partials/${name}.html`, document.baseURI));
+    if (!response.ok) {
+      throw new Error(`Partial introuvable: ${name}`);
+    }
     template.outerHTML = await response.text();
   }));
 }
 
-try {
-  await loadPartials();
-  await import("./js/main.js");
-} catch (error) {
-  document.body.innerHTML = '<div class="empty-state">Lance le dashboard avec uvicorn pour charger les modules.</div>';
-  console.error(error);
-}
+loadPartials()
+  .then(() => {
+    window.dashboardBoot = "partials";
+    return import("./js/main.js?v=20260509-2");
+  })
+  .then(({ initMain }) => {
+    initMain();
+    window.dashboardBoot = "ready";
+  })
+  .catch((error) => {
+    window.dashboardBoot = "error";
+    document.body.innerHTML = '<div class="empty-state">Impossible de charger les modules du dashboard.</div>';
+    console.error(error);
+  });
