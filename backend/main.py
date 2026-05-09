@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
-from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from starlette.background import BackgroundTask
@@ -15,6 +15,7 @@ from . import db, music_service
 
 SESSION_COOKIE = "dashboard_session"
 FRONTEND_DIR = Path(__file__).resolve().parents[1]
+PARTIALS_DIR = FRONTEND_DIR / "partials"
 
 app = FastAPI(title="Dashboard Music API")
 
@@ -105,6 +106,14 @@ def active_devices(user_id: int) -> list[dict[str, Any]]:
     return [device_payload(device) for device in db.list_music_devices(user_id)]
 
 
+def render_frontend() -> HTMLResponse:
+    html = (FRONTEND_DIR / "index.html").read_text(encoding="utf-8")
+    for name in ("main", "music", "docs"):
+        partial = (PARTIALS_DIR / f"{name}.html").read_text(encoding="utf-8")
+        html = html.replace(f'<template data-include="{name}"></template>', partial)
+    return HTMLResponse(html)
+
+
 @app.on_event("startup")
 def startup() -> None:
     db.init_db()
@@ -113,6 +122,12 @@ def startup() -> None:
 @app.get("/api/health")
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/", response_class=HTMLResponse)
+@app.get("/index.html", response_class=HTMLResponse)
+async def index() -> HTMLResponse:
+    return render_frontend()
 
 
 @app.post("/api/auth/register")

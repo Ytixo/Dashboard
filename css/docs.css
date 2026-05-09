@@ -1,0 +1,167 @@
+#docsOverlay {
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-menu {
+  width: min(860px, 100%);
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+}
+
+.docs-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  padding-top: 24px;
+}
+
+.doc-button {
+  --white: #ecfffb;
+  --soft: #99f6e4;
+  --deep: #0f766e;
+  --pink: #fb7185;
+  --radius: 14px;
+  display: block;
+  position: relative;
+  width: 220px;
+  height: 80px;
+  border: 0;
+  color: var(--white);
+  text-decoration: none;
+  background: transparent;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.doc-bg,
+.doc-bg:before,
+.doc-wrap,
+.doc-content,
+.doc-outline {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
+
+.doc-bg:before {
+  content: "";
+  background: var(--deep);
+  filter: blur(5px);
+  box-shadow: -7px 6px 0 rgba(15, 118, 110, 0.4), -16px 14px 8px rgba(251, 113, 133, 0.16), -30px 26px 18px rgba(0, 0, 0, 0.22);
+}
+
+.doc-wrap {
+  overflow: hidden;
+  padding: 3px;
+  transform: translate(6px, -6px);
+  background: linear-gradient(to bottom, var(--soft), var(--pink));
+  transition: transform 0.2s ease;
+}
+
+.doc-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(94, 234, 212, 0.72), rgba(251, 113, 133, 0.76));
+  box-shadow: inset -2px 12px 11px -5px rgba(153, 246, 228, 0.7), inset 1px -3px 11px rgba(0, 0, 0, 0.35);
+  text-shadow: -1px 1px 2px #083f3b;
+}
+
+.doc-outline {
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.doc-outline:before {
+  content: "";
+  position: absolute;
+  inset: -80px 52px;
+  background: linear-gradient(to right, transparent, white, transparent);
+  animation: spin 3s linear infinite paused;
+}
+
+.doc-icon,
+.doc-icon:before,
+.doc-icon:after {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--white);
+}
+
+.doc-icon {
+  position: relative;
+  width: 24px;
+  animation: swingArrow 1s ease-in-out infinite paused;
+}
+
+.doc-icon:before,
+.doc-icon:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 14px;
+  transform-origin: center right;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+
+.doc-icon:before {
+  top: 1px;
+  transform: rotate(44deg);
+  animation-name: rotateArrowLine;
+}
+
+.doc-icon:after {
+  bottom: 1px;
+  transform: rotate(316deg);
+  animation-name: rotateArrowLine2;
+}
+
+.doc-button:hover .doc-wrap {
+  transform: translate(8px, -8px);
+}
+
+.doc-button:hover .doc-outline {
+  opacity: 1;
+}
+
+.doc-button:hover .doc-outline:before,
+.doc-button:hover .doc-icon,
+.doc-button:hover .doc-icon:before,
+.doc-button:hover .doc-icon:after {
+  animation-play-state: running;
+}
+
+.doc-button:active .doc-wrap {
+  transform: translate(3px, -3px);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes swingArrow {
+  50% { transform: translateX(5px); }
+}
+
+@keyframes rotateArrowLine {
+  50% { transform: rotate(30deg); }
+  80% { transform: rotate(55deg); }
+}
+
+@keyframes rotateArrowLine2 {
+  50% { transform: rotate(330deg); }
+  80% { transform: rotate(300deg); }
+}

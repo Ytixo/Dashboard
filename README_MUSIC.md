@@ -12,6 +12,8 @@ uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 
 Ouvre ensuite `http://127.0.0.1:8000`.
 
+N'ouvre pas `index.html` directement en `file://` : les modules HTML et les routes YouTube Music doivent passer par un serveur local.
+
 ## Cookies YouTube Music
 
 1. Ouvre `https://music.youtube.com` dans le navigateur du compte à lier.
